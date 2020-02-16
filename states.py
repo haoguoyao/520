@@ -8,14 +8,14 @@ Created on Thu Feb 13 11:25:46 2020
 import state
 class states:
     #each state in a tuple
-    def __init__(self,maze,heuristic = "manhattan"):
+    def __init__(self,size,heuristic = "manhattan"):
         #1 means blocked, 0 means opened
         #self.observed = [[2 for _ in range(size_x)] for _ in range(size_y)]
-        #self.maze = [[0 for _ in range(size_x)] for _ in range(size_y)]
-        print maze
-        self.maze = maze
-        self.size_x = len(maze)
-        self.size_y = len(maze[0])
+        self.maze = [[0 for _ in range(size)] for _ in range(size)]
+        #print maze
+        #self.maze = maze
+        self.size_x = len(self.maze)
+        self.size_y = len(self.maze[0])
         self.initialize()
         if heuristic == "manhattan":
             self.heuristic = self.manhattan_heuristic
@@ -81,7 +81,10 @@ class states:
         return abs(position1.i-position2.i)+abs(position1.j-position2.j)
     def improving_heuristic(self,agent,target):
         pass
-    
+    def clear(self):
+        for i in range(0,self.size_x):
+            for j in range(0,self.size_y):
+                self.states[i][j].clear()
     #tree
     def show_maze(self):
         for i in range (0,self.size_x):
@@ -91,7 +94,8 @@ class states:
                 else:
                     print ("□"),
             print("")
-    def show_route(self,tree_node):
+    def show_route(self,path):
+        #
         for i in range (0,self.size_x):
             for j in range(0,self.size_y):
                 if self.maze[i][j]==0:

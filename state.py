@@ -14,7 +14,7 @@ class state:
         self.i = i
         self.j = j
         self.h = None
-        self.search = None
+        self.search = 0
     def __lt__(self,data):
         if self.g+self.h < data.g+data.h:
             return True
@@ -34,4 +34,6 @@ class state:
         if self.g+self.h >= data.g+data.h:
             return True
         else:
-            return False   
+            return False  
+    def clear(self):
+        self.closed = False
