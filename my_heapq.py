@@ -44,6 +44,11 @@ class my_heapq:
                 else:
                     self.swap_position(index,smaller)
                     index = smaller
-    def show(self):
-        print(self.lst)
+    def peek(self):
+        return self.lst[0]
+    def is_empty(self):
+        if len(self.lst)==0:
+            return True
+        else:
+            return False
         
