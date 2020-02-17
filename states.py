@@ -52,12 +52,33 @@ class states:
                 self.states[current.i][current.j+1].h = self.heuristic(current,self.target)
                 next_move.append(self.states[current.i][current.j+1])
         return next_move
-
+    
+    
+    def succ_back(self,agent,current):
+        next_move = []
+        if current.i>=1:
+            if self.maze[current.i-1][current.j]!=1:
+                self.states[current.i-1][current.j].h = self.heuristic(current,agent)
+                next_move.append(self.states[current.i-1][current.j])
+        if current.j>=1:
+            if self.maze[current.i][current.j-1]!=1:
+                self.states[current.i][current.j-1].h = self.heuristic(current,agent)
+                next_move.append(self.states[current.i][current.j-1])
+        if current.i<self.size_x-1:
+            if self.maze[current.i+1][current.j]!=1:
+                self.states[current.i+1][current.j].h = self.heuristic(current,agent)
+                next_move.append(self.states[current.i+1][current.j])
+        if current.j<self.size_y-1:
+            if self.maze[current.i][current.j+1]!=1:
+                self.states[current.i][current.j+1].h = self.heuristic(current,agent)
+                next_move.append(self.states[current.i][current.j+1])
+        return next_move
     def manhattan_heuristic(self,position1,position2):
         return abs(position1.i-position2.i)+abs(position1.j-position2.j)
-    def improving_heuristic(self,agent,target):
+    def improving_heuristic(self,position1,position2):
         pass
     def clear(self):
         for i in range(0,self.size_x):
             for j in range(0,self.size_y):
                 self.states[i][j].clear()
+

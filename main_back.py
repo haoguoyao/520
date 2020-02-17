@@ -1,10 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 13 11:12:47 2020
+Created on Mon Feb 17 14:58:29 2020
 
 @author: apple
 """
+
 import random
 import states as sts
 import my_heapq
@@ -25,7 +26,6 @@ def print_maze():
 def show_route(path):
         points = []
         for temp in path:
-            print(temp.i,temp.j)
             points.append((temp.i,temp.j))
         for j in range (0,size):
             for i in range(0,size):
@@ -40,22 +40,19 @@ def show_route(path):
                 else:
                     print ("□"),
             print("")
-            
-def A_star():
+
+                
+def A_star_back():
+    #print("########")
     global number_expaned_cells
-    while len(opn_list.lst)>0 and target > opn_list.peek():
+    while len(opn_list.lst)>0 and agent > opn_list.peek():
         number_expaned_cells+=1
         s = opn_list.pop()
         s.closed = True
-        succ = states.succ(s)
+        succ = states.succ_back(agent,s)
+        #print("+++++++++++++++++++")
+        #print(len(succ))
         for i in succ:
-#            if states.states[i[0]][i[1]] < counter:
-#                states.states[i[0]][i[1]].g=int("inf")
-#                states.states[i[0]][i[1]].search=counter
-#            if states.states[i[0]][i[1]].g > states.states[s[0]][s[1]].g+1:
-#                states.states[i[0]][i[1]].g = states.states[s[0]][s[1]].g+1
-#                states.states[i[0]][i[1]].node = states.states[s[0]][s[1]]
-#                opn_list.push(states.states[i[0]][i[1]])
             if i.search < counter:
                 i.g=float("inf")
                 i.search=counter
@@ -63,9 +60,7 @@ def A_star():
                 i.g = s.g+1
                 i.node = s
                 if(i.closed==False):
-                    opn_list.push(i)
-                
-               
+                    opn_list.push(i)               
 number_expaned_cells = 0  
 for repeat in range(0,30):
     size = 60
@@ -87,41 +82,42 @@ for repeat in range(0,30):
             break
     #print the maze    
     
-    print_maze()
+    #print_maze()
     whole_path = []
-    agent.h = states.heuristic(agent, target)
-    target.h = 0
+    target.h = states.heuristic(agent, target)
+    agent.h = 0
     states.set_target(target)
     
-    while agent!=target:
+    while agent.i!=target.i or agent.j!=target.j:
     #for temp in range(1,100):
         print "In this round, the agent start with"
         print (agent.i,agent.j)
         counter = counter+1
-        agent.g = 0
-        target.g= float('inf')
+        target.g = 0
+        agent.g= float('inf')
         agent.search = counter
         opn_list = my_heapq.my_heapq()
         states.clear()
-        opn_list.push(agent)
-        A_star()
+        opn_list.push(target)
+        
+        A_star_back()
+        
         if opn_list.is_empty()==True:
             print("cannot reach target") 
             print_maze()
             break
         else:
             path = []
-            path.append(target)
-            next_node = target.node
+            #path.append(agent)
+            next_node = agent.node
             path.append(next_node)
-            #while next_node!=agent:
-            while next_node.node!=agent:
+            while next_node!=target:
                 next_node = next_node.node
                 path.append(next_node)
-            path.reverse()
 #            for temp in path:
 #                print (temp.i,temp.j)
             for node in path:
+                #print("in path")
                 #one cell is detected to be blocked
                 if node.i>=1:
                     states.maze[node.i-1][node.j] = maze[node.i-1][node.j]
@@ -140,8 +136,10 @@ for repeat in range(0,30):
                     agent = node
                 if node.i==target.i and node.j== target.j:
                     show_route(whole_path)
-                    print("Reach the target")  
+                    print("Reach the target")
+                    
 
 print (number_expaned_cells)
         
     
+
