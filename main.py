@@ -9,6 +9,18 @@ import random
 import states as sts
 import my_heapq
 import sys
+def print_maze():
+    for j in range (0,size):
+        for i in range(0,size):
+            if i==start_remember[0] and j==start_remember[1]:
+                print("s"),
+            if i==target.i and j==target.j:
+                print("t"),
+            elif maze[i][j]==0:
+                print (" "),
+            else:
+                print ("□"),
+        print("")
 def A_star():
     while len(opn_list.lst)>0 and target > opn_list.peek():
         s = opn_list.pop()
@@ -33,38 +45,33 @@ def A_star():
                 
                 
 
-#main
+
 size = 30
 maze = [[0 if random.random()>0.3 else 1  for _ in range(size)] for _ in range(size)]
 
 states = sts.states(size)
 counter = 0
+
+# initiate the start point and target point
 while True:
     agent = states.states[random.randint(0,size-1)][random.randint(0,size-1)]
     if(maze[agent.i][agent.j])==0:
         break
+start_remember = (agent.i,agent.j)
 while True:
     target = states.states[random.randint(0,size-1)][random.randint(0,size-1)]
     if(maze[target.i][target.j])==0:
         break
-    
-for i in range (0,size):
-    for j in range(0,size):
-        if i==agent.i and j==agent.j:
-            print("s"),
-        if i==target.i and j==target.j:
-            print("t"),
-        elif maze[i][j]==0:
-            print (" "),
-        else:
-            print ("□"),
-    print("")
+#print the maze    
+
+print_maze()
+whole_path = []
 agent.h = states.heuristic(agent, target)
 target.h = 0
-states.set_goal(target)
-states.show_maze()
-#while agent!=target:
-for temp in range(1,100):
+states.set_target(target)
+
+while agent!=target:
+#for temp in range(1,100):
     print "In this round, the agent start with"
     print (agent.i,agent.j)
     counter = counter+1
@@ -78,6 +85,8 @@ for temp in range(1,100):
     A_star()
     if opn_list.is_empty()==True:
         print("cannot reach target")
+        #print the maze    
+        print_maze()
         sys.exit()
     else:
         path = []
@@ -89,19 +98,44 @@ for temp in range(1,100):
             path.append(next_node)
         path.reverse()
         for temp in path:
-                    print (temp.i,temp.j)
+            print (temp.i,temp.j)
         for node in path:
             #one cell is detected to be blocked
+            if node.i>=1:
+                states.maze[node.i-1][node.j] = maze[node.i-1][node.j]
+            if node.j>=1:
+                states.maze[node.i][node.j-1] = maze[node.i][node.j-1]
+            if node.i<size-1:
+                states.maze[node.i+1][node.j] = maze[node.i+1][node.j]
+            if node.j<size-1:
+                states.maze[node.i][node.j+1] = maze[node.i][node.j+1]
+
             if maze[node.i][node.j]==1:
                 states.maze[node.i][node.j] = 1
                 break
-            if node==target:
-                
-                print("Reach the target")
-                sys.exit()
             else:
+                whole_path.append(node)
                 agent = node
 
-print("Finish")
+def show_route(path):
+    points = []
+    for temp in path:
+        print(temp.i,temp.j)
+        points.append((temp.i,temp.j))
+    for j in range (0,size):
+        for i in range(0,size):
+            if i==start_remember[0] and j==start_remember[1]:
+                print("s"),
+            elif i==target.i and j==target.j:
+                print("t"),
+            elif (i,j) in points:
+                print("*"),
+            elif maze[i][j]==0:
+                print (" "),
+            else:
+                print ("□"),
+        print("")
+show_route(whole_path)
+print("Reach the target")
         
     
