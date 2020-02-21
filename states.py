@@ -25,8 +25,8 @@ class states:
         self.target = target
     def set_start(self,start):
         self.start = start 
-    def one_blocked(self,x,y):
-        self.observed[x][y] = 1
+#    def one_blocked(self,x,y):
+#        self.observed[x][y] = 1
 #    def one_opened(self,x,y):
 #        self.observed[x][y] = 0
     def initialize(self):
