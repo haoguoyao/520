@@ -33,7 +33,7 @@ class A_star_back_cls(ast.A_star_parent):
 
 
     def begin(self):
-        self.print_maze()
+        #self.print_maze()
         whole_path = []
         self.target.h = self.states.heuristic(self.agent, self.target)
         self.agent.h = 0

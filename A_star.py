@@ -5,11 +5,14 @@ import states as sts
 import my_heapq
 
 class A_star_parent:
-    def __init__(self,maze,position1,position2,size):
+    def __init__(self,maze,position1,position2,size,heuristic = "manhattan",tie="bigger"):
         self.start = position1
         self.maze = maze
         self.size = size
-        self.states = sts.states(size)
+        if(tie=="bigger"):
+            self.states = sts.states(size)
+        if(tie=="smaller"):
+            self.states = sts.states(size,heuristic,tie)
         self.agent =  self.states.states[position1[0]][position1[1]]
         self.target =  self.states.states[position2[0]][position2[1]]
         if(self.maze[self.target.i][self.target.j])==1:

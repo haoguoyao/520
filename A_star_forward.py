@@ -36,8 +36,8 @@ class A_star_forward_cls(ast.A_star_parent):
         
         while self.agent!=self.target:
         #for temp in range(1,100):
-            print "In this round, the agent start with"
-            print (self.agent.i,self.agent.j)
+            #print "In this round, the agent start with"
+            #print (self.agent.i,self.agent.j)
             self.counter = self.counter+1
             self.agent.g = 0
             self.target.g= float('inf')
