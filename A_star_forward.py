@@ -21,7 +21,7 @@ class A_star_forward_cls(ast.A_star_parent):
                 if i.search < self.counter:
                     i.g=float("inf")
                     i.search=self.counter
-                if i.g > s.g+1:
+                if i.g > s.g+1:                    
                     i.g = s.g+1
                     i.node = s
                     if(i.closed==False):

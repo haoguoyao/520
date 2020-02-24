@@ -5,7 +5,7 @@ import states as sts
 import my_heapq
 
 class A_star_parent:
-    def __init__(self,maze,position1,position2,size,heuristic = "manhattan",tie="bigger"):
+    def __init__(self,maze,position1,position2,size,heuristic = "manhattan",tie="bigger",improving=False):
         self.start = position1
         self.maze = maze
         self.size = size
