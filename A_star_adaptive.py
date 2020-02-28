@@ -9,7 +9,7 @@ import random
 import states as sts
 import my_heapq
 import A_star as ast
-class A_star_forward_cls(ast.A_star_parent):
+class A_star_adaptive_cls(ast.A_star_parent):
 
     def A_star(self):
         while len(self.opn_list.lst)>0 and self.target > self.opn_list.peek():
@@ -19,6 +19,7 @@ class A_star_forward_cls(ast.A_star_parent):
             succ = self.states.succ(s)
             for i in succ:
                 if i.search < self.counter:
+                    
                     i.g=float("inf")
                     i.search=self.counter
                 if i.g > s.g+1:                    
@@ -30,9 +31,11 @@ class A_star_forward_cls(ast.A_star_parent):
                
     def begin(self):
         whole_path = []
+
         self.states.set_target(self.target)
         
         while self.agent!=self.target:
+        #for temp in range(1,100):
             #print "In this round, the agent start with"
             #print (self.agent.i,self.agent.j)
             self.counter = self.counter+1
@@ -43,6 +46,24 @@ class A_star_forward_cls(ast.A_star_parent):
             self.states.clear()
             self.opn_list.push(self.agent)
             self.A_star()
+
+            for m in range(self.states.size_x):
+                for n in range(self.states.size_y):
+                    if not self.states.states[m][n].g is None and not self.target.g is None:
+                        #pass
+                        
+                        #self.states.states[m][n].h = max(self.states.states[m][n].h,self.target.g-self.states.states[m][n].g)
+                        
+                        # print(self.target.g+self.already_walk)
+                        # print(self.states.states[m][n].g)
+                        if(self.states.states[m][n].closed==True):
+                            # print("@@@@@@@@@@@@@@")
+                            # print(self.states.states[m][n].h )
+                            # print(self.target.g-self.states.states[m][n].g )
+                            self.states.states[m][n].h = self.target.g-self.states.states[m][n].g
+
+
+
             if self.opn_list.is_empty()==True:
                 print("cannot reach target") 
                 #print_maze()

@@ -25,8 +25,8 @@ class A_star_parent:
         self.counter = 0
 
     def print_maze(self):
-        for j in range (0,self.size):
-            for i in range(0,self.size):
+        for j in range (0,self.states.size_x):
+            for i in range(0,self.states.size_x):
                 if i==self.start[0] and j==self.start[1]:
                     print("s"),
                 if i==self.target.i and j==self.target.j:
